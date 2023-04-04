@@ -1,3 +1,4 @@
 *.swp
 *.wav
+ex.py
 __pycache__
