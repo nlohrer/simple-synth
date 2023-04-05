@@ -3,14 +3,13 @@ from scipy.io import wavfile
 import math
 import itertools
 
-
 def get_sin_oscillator(frequency, amplitude, sample_rate = 44100):
     increment = (2 * math.pi * frequency) / sample_rate
     return (math.sin(v) * amplitude for v in itertools.count(start = 0, step = increment))
 
 def sin_to_wav(freq, sec, amp = 0.1, sample_rate = 44100):
     osc = get_sin_oscillator(frequency = freq, amplitude = 1)
-    samples = [next(osc) for i in range(44100 * sec)]
+    samples = [next(osc) for i in range(round(44100 * sec))]
     wav = numpy.array(samples)
     wav = numpy.int16(wav * amp * (2**15 - 1))
     return wav
