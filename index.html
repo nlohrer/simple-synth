@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='./style.css' rel='stylesheet' type='text/css'>
+    <title>Synth</title>
+</head>
+<body>
+    <h1>Simple synth</h1>
+    <form action='' method='post' class='synth-form'>
+    <div class='synth-option'>
+        <label for='frequency'>Frequency</label>
+        <input type='text' name='frequency' id='frequency' required />
+    </div>
+
+    <div class='synth-option'>
+        <label for='sec'>Duration</label>
+        <input type='text' name='sec' id='sec' />
+    </div>
+
+    <div class='synth-option'>
+        <label for='amp'>Amplitude</label>
+        <input type='text' name='amp' id='amp' />
+    </div>
+
+    <div class='synth-option'>
+        <label for='sample_rate'>Sample rate</label>
+        <input type='text' name='sample_rate' id='sample_rate' />
+    </div>
+
+    <div class='synth-option'>
+        <input type='submit' value='Create file' />
+    </div>
+    </form>
+</body>
+</html>
