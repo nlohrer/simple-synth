@@ -2,3 +2,4 @@
 *.wav
 ex.py
 __pycache__
+.venv/
