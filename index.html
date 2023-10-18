@@ -7,8 +7,8 @@
     <title>Synth</title>
 </head>
 <body>
-    <h1>Simple synth</h1>
-    <form action='' method='post' class='synth-form'>
+    <h1 id='head'>Simple synth</h1>
+    <form action='javascript:void(0);' method='post' class='synth-form'>
     <div class='synth-option'>
         <label for='frequency'>Frequency</label>
         <input type='text' name='frequency' id='frequency' required />
@@ -30,8 +30,18 @@
     </div>
 
     <div class='synth-option'>
-        <input type='submit' value='Create file' />
+        <input id='submit' type='submit' value='Create file' />
     </div>
     </form>
+    <div id='wav-container'>
+        <!--
+        <audio controls>
+            <source src='http://localhost:6500/static/1.wav' type='audio/wav'>
+            Your browser does not support the audio element.
+        </audio>
+    -->
+    </div>
 </body>
+
 </html>
+<script src='./script.js'></script>

@@ -15,3 +15,8 @@ form {
     display: flex;
     justify-content: space-evenly;
 }
+
+#wav-container {
+    margin-top: 20px;
+}
+
