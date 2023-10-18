@@ -9,12 +9,13 @@ async function addWAVs() {
     const frequencyField = document.querySelector("#frequency");
     const secondsField = document.querySelector("#sec");
     const ampField = document.querySelector("#amp");
+    const waveformField = document.querySelector("#waveform");
     const frequency = frequencyField.value.trim();
     const seconds = secondsField.value.trim();
     const amplitude = ampField.value.trim();
-    console.log(amplitude);
+    const waveform = waveformField.value;
 
-    const wavURL = await createWAV(frequency, seconds, amplitude);
+    const wavURL = await createWAV(frequency, seconds, amplitude, waveform);
     addWAVToContainer(wavURL);
     console.log(wavURL);
 }
@@ -39,12 +40,8 @@ async function getInfo() {
     console.log(response_text);
 }
 
-async function createWAV(frequency, duration, amplitude) {
-    body = `{"frequency": ${frequency}, "seconds": ${duration}`;
-    if (amplitude) {
-        body += `, "amplitude": ${amplitude}`
-    }
-    body += '}';
+async function createWAV(frequency, duration, amplitude, waveform) {
+    body = `{"frequency": ${frequency}, "seconds": ${duration}, "amplitude": ${amplitude}, "waveform": "${waveform}"}`;
     response = await fetch(`${url}/synth/${id++}`, {
         method: 'POST',
         headers: {
