@@ -31,3 +31,15 @@ def tri_to_file_additive(freqs, amps, sec, fname = 'temp.wav', sample_rate = 441
 def sin_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100):
     wav = sin_to_wav(freq, sec, amp, sample_rate)
     wavfile.write(fname, sample_rate, wav)
+
+def tri_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100):
+    wav = tri_to_wav(freq, sec, amp, sample_rate)
+    wavfile.write(fname, sample_rate, wav)
+
+def saw_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100):
+    wav = saw_to_wav(freq, sec, amp, sample_rate)
+    wavfile.write(fname, sample_rate, wav)
+
+def square_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100):
+    wav = square_to_wav(freq, sec, amp, sample_rate)
+    wavfile.write(fname, sample_rate, wav)
