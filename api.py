@@ -32,12 +32,20 @@ def createWAV(id):
 
     freq, sec, = request.json['frequency'], request.json['seconds'];
     amplitude = request.json.get('amplitude')
+    waveform = request.json.setdefault('waveform', 'sine')
     amp = 0.1
-    
     if (amplitude):
-        amp = set_amplitude(amplitude, freq)
+        amp = set_amplitude(amplitude, freq, waveform)
 
-    synth.sin_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+    if waveform == 'sine':
+        synth.sin_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+    elif waveform == 'triangular':
+        synth.tri_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+    elif waveform == 'sawtooth':
+        synth.saw_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+    else:
+        synth.square_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+
 
     url = urlparse(request.base_url)
     hostname = url.hostname
@@ -49,7 +57,7 @@ def createWAV(id):
     
     return response
 
-def set_amplitude(amplitude, freq):
+def set_amplitude(amplitude, freq, waveform):
     # these are somewhat arbitrarily defined limits for amplitude; the upper limit for amplitude increases with frequency to prevent loss of hearing
     if freq <= 300:
         upper_limit = 1
@@ -63,5 +71,9 @@ def set_amplitude(amplitude, freq):
         upper_limit = 0.1
     else:
         upper_limit = 0.05
-    amp = amplitude if amplitude <= upper_limit else upper_limit  # Preventing the creation of extremely loud sounds
+    # Preventing the creation of extremely loud sounds
+    amp = amplitude if amplitude <= upper_limit else upper_limit
+    # Sawtooth waves and square waves tend to be louder than others
+    if waveform in ('sawtooth', 'square'):
+        amp *= 0.8
     return amp
