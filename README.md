@@ -14,7 +14,7 @@ git clone https://github.com/nlohrer/simple-synth.git
 cd simple-synth
 mkdir static
 python3 -m venv .venv
-. ./.venv/vin/activate
+. ./.venv/bin/activate
 pip install -r requirements.txt
 flask --app api run --port 6500
 ```
