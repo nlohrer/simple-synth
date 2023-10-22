@@ -14,12 +14,20 @@ const releaseField = document.querySelector("#release");
 const attackLabel = document.querySelector("#attack-label");
 const decayLabel = document.querySelector("#decay-label");
 const releaseLabel = document.querySelector("#release-label");
+const envelopeContainer = document.querySelector("#envelope-container");
+const envelopeGraph = document.querySelector("#envelope-graph")
+const graphWidth = envelopeContainer.getAttribute("width");
+const graphHeight = envelopeContainer.getAttribute("height");
 
 envelopeFields = [secondsField, attackField, decayField, releaseField];
-keepEnvelopeBalance();
 envelopeFields.forEach((field) => {
-    field.addEventListener("input", keepEnvelopeBalance);
+    field.addEventListener("input", () => {
+        keepEnvelopeBalance();
+        updateEnvelopeGraph();
+    });
 });
+keepEnvelopeBalance();
+updateEnvelopeGraph();
 
 
 async function addWAVs() {
@@ -87,4 +95,40 @@ function keepEnvelopeBalance() {
     attackLabel.textContent = `Attack: ${parseFloat(attack).toFixed(2)}`;
     decayLabel.textContent = `Decay: ${parseFloat(decay).toFixed(2)}`;
     releaseLabel.textContent = `Release: ${parseFloat(release).toFixed(2)}`;
+}
+
+function updateEnvelopeGraph() {
+    const coordinateArray = new Array(5);
+    const seconds = secondsField.value;
+    const unit = graphWidth / seconds
+
+    const newAttack = Math.round(attackField.value * unit);
+    if (newAttack == graphWidth) {
+        envelopeGraph.setAttribute("d", `M0,${Math.round(graphHeight)} L${graphWidth},0`);
+        return;
+    }
+    const newDecay = Math.round(decayField.value * unit);
+    const newRelease = Math.round(releaseField.value * unit);
+    const newSeconds = Math.round(seconds * unit);
+
+    coordinateArray[0] = `M0,${graphHeight}`
+    coordinateArray[1] = `L${newAttack},0`;
+    coordinateArray[2] = `L${newAttack + newDecay},${Math.round(graphHeight/2)}`;
+    coordinateArray[3] = `L${newSeconds - newRelease},${Math.round(graphHeight/2)}`;
+    coordinateArray[4] = `L${graphWidth},${graphHeight}`;
+
+    if (newAttack === 0) {
+        if (newDecay === 0) {
+            coordinateArray[0] = `M0,${Math.round(graphHeight/2)}`
+            coordinateArray[1] = `L0,${Math.round(graphHeight/2)}`
+        } else {
+        coordinateArray[0] = `M0,0`;
+        }
+    }
+    if (newRelease === 0) {
+        coordinateArray[4] = `L${graphWidth},${Math.round(graphHeight/2)}`
+    }
+
+    const newCoordinateArray = coordinateArray.join(" ");
+    envelopeGraph.setAttribute("d", newCoordinateArray);
 }
