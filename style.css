@@ -16,6 +16,11 @@ form {
     justify-content: space-evenly;
 }
 
+.envelope-options {
+    display: flex;
+    gap: 10px;
+}
+
 #wav-container {
     margin-top: 20px;
 }
