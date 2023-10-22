@@ -24,3 +24,21 @@ def square(x):
         return 1
     else:
         return -1
+
+def get_linear_interpolation_function(p1, p2):
+    '''
+    input: (x1, x2), (y1, y2) 
+    '''
+    x1, y1 = p1
+    x2, y2 = p2
+
+    if x1 == x2:
+        def linear(x):
+            return y2
+        return linear
+
+    slope = (y2 - y1) / (x2 - x1)
+    intercept = y1 - slope * x1
+    def linear(x):
+        return slope * x + intercept
+    return linear

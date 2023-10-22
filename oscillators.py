@@ -33,3 +33,40 @@ def osc_to_wav(osc, sec, amp = 0.1, sample_rate = 44100):
     wav_array = osc_to_array(osc, sec, sample_rate)
     wav = array_to_wav(wav_array, amp)
     return wav
+
+def apply_envelope(osc, sec, attack, decay, release, sample_rate = 44100):
+    '''
+    applys an envelope to an oscillator and returns a numpy array.
+
+    attack, delay, and release represent durations
+    '''
+    sustain = sec - attack - decay - release
+    if sustain < 0:
+        raise ValueError("attack + decay + release must not exceed the entire duration")
+
+    # points for interpolation
+    p1 = (0, 0)
+    p2 = (attack, 2)
+    p3 = (attack + decay, 1)
+    p4 = (attack + decay + sustain, 1)
+    p5 = (sec, 0)
+
+    attack_fun = wave.get_linear_interpolation_function(p1, p2)
+    decay_fun = wave.get_linear_interpolation_function(p2, p3)
+    sustain_fun = wave.get_linear_interpolation_function(p3, p4)
+    release_fun = wave.get_linear_interpolation_function(p4, p5)
+
+    def envelope_function(x):
+        x = x / sample_rate
+        if x <= attack:
+            return attack_fun(x)
+        elif x <= attack + decay:
+            return decay_fun(x)
+        elif x <= attack + decay + sustain:
+            return sustain_fun(x)
+        else:
+            return release_fun(x)
+
+    samples = [next(osc) * envelope_function(i) for i in range(round(sample_rate * sec))]
+    wav_array = numpy.array(samples)
+    return wav_array
