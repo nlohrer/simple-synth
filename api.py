@@ -33,18 +33,23 @@ def createWAV(id):
     freq, sec, = request.json['frequency'], request.json['seconds'];
     amplitude = request.json.get('amplitude')
     waveform = request.json.setdefault('waveform', 'sine')
+    envelope = request.json.setdefault('envelope', None)
     amp = 0.1
     if (amplitude):
         amp = set_amplitude(amplitude, freq, waveform)
+    if envelope is not None:
+        env = envelope.values()
+    else:
+        env = None
 
     if waveform == 'sine':
-        synth.sin_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+        synth.sin_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
     elif waveform == 'triangular':
-        synth.tri_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+        synth.tri_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
     elif waveform == 'sawtooth':
-        synth.saw_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+        synth.saw_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
     else:
-        synth.square_to_file(freq = freq, sec = sec, amp = amp, fname = local_path)
+        synth.square_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
 
 
     url = urlparse(request.base_url)
