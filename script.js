@@ -34,7 +34,6 @@ async function addWAVs() {
 
     const wavURL = await createWAV(frequency, seconds, amplitude, waveform, envelope);
     addWAVToContainer(wavURL);
-    console.log(wavURL);
 }
 
 function addWAVToContainer(url) {
@@ -88,9 +87,4 @@ function keepEnvelopeBalance() {
     attackLabel.textContent = `Attack: ${parseFloat(attack).toFixed(2)}`;
     decayLabel.textContent = `Decay: ${parseFloat(decay).toFixed(2)}`;
     releaseLabel.textContent = `Release: ${parseFloat(release).toFixed(2)}`;
-
-    console.log("---------------")
-    console.log("attack max:" + attackField.max);
-    console.log("decay max:" + decayField.max);
-    console.log("release max:" + releaseField.max);
 }
