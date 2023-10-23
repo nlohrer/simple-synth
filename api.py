@@ -24,6 +24,26 @@ def information():
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
+@app.route("/synth/<id_str>", methods=['OPTIONS', 'DELETE'])
+def deleteWAV(id_str):
+    if request.method == 'OPTIONS':
+        response = app.make_default_options_response()
+        response.add_cors_headers()
+        return response
+
+    global used_indices
+    id = int(id_str)
+    if id not in used_indices:
+        response = Response("Error: file with this id does not exist", 404)
+        response.add_cors_headers()
+        return response
+    
+    os.remove(f"./static/{id}.wav")
+    used_indices.remove(id)
+    response = Response(status = 204)
+    response.add_cors_headers()
+    return response
+
 # Example usage:
 # $ curl -iX "POST" "localhost:6500/synth/1" -H "content-type: application/json" -d '{"frequency": 440, "seconds": 2}'
 # The response body includes the path to the created .wav file
