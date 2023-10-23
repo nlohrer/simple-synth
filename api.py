@@ -18,22 +18,36 @@ def information():
 # The response body includes the path to the created .wav file
 @app.route("/synth/<id>", methods=['OPTIONS', 'POST'])
 def createWAV(id):
-
     if request.method == 'OPTIONS':
         response = app.make_default_options_response()
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = '*'
-        response.headers['Access-Control-Allow-Headers'] = '*'
+        response.add_cors_headers()
         return response
     
-    current_working_directory = os.getcwd();
-    file_path = f"/static/{id}.wav"
-    local_path = f"{current_working_directory}{file_path}"
+    current_working_directory = os.getcwd()
+    url_file_path = f"/static/{id}.wav"
+    local_path = f"{current_working_directory}{url_file_path}"
 
-    freq, sec, = request.json['frequency'], request.json['seconds'];
-    amplitude = request.json.get('amplitude')
-    waveform = request.json.setdefault('waveform', 'sine')
-    envelope = request.json.setdefault('envelope', None)
+    freq, sec, amplitude, waveform, envelope = get_params_from_body(request.json)
+    amp, env = correct_parameters(amplitude, envelope, freq, waveform)
+
+    file_function = get_file_function(waveform)
+    file_function(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
+
+    response_url = get_response_url(request, url_file_path)
+    response = Response(response_url, 201)
+    response.add_cors_headers()
+    
+    return response
+
+def get_params_from_body(body):
+    freq = body['frequency']
+    sec = body['seconds']
+    amplitude = body.get('amplitude')
+    waveform = body.setdefault('waveform', 'sine')
+    envelope = body.setdefault('envelope', 'None')
+    return freq, sec, amplitude, waveform, envelope
+
+def correct_parameters(amplitude, envelope, freq, waveform):
     amp = 0.1
     if (amplitude):
         amp = set_amplitude(amplitude, freq, waveform)
@@ -41,26 +55,7 @@ def createWAV(id):
         env = envelope.values()
     else:
         env = None
-
-    if waveform == 'sine':
-        synth.sin_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
-    elif waveform == 'triangular':
-        synth.tri_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
-    elif waveform == 'sawtooth':
-        synth.saw_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
-    else:
-        synth.square_to_file(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
-
-
-    url = urlparse(request.base_url)
-    hostname = url.hostname
-    port = url.port
-    response = Response(f"{hostname}:{port}{file_path}", 201)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = '*'
-    
-    return response
+    return amp, env
 
 def set_amplitude(amplitude, freq, waveform):
     # these are somewhat arbitrarily defined limits for amplitude; the upper limit for amplitude increases with frequency to prevent loss of hearing
@@ -82,3 +77,26 @@ def set_amplitude(amplitude, freq, waveform):
     if waveform in ('sawtooth', 'square'):
         amp *= 0.8
     return amp
+
+def get_file_function(waveform):
+    if waveform == 'sine':
+        return synth.sin_to_file
+    elif waveform == 'triangular':
+        return synth.tri_to_file
+    elif waveform == 'sawtooth':
+        return synth.saw_to_file
+    else:
+        return synth.square_to_file
+
+def get_response_url(request, url_file_path):
+    url = urlparse(request.base_url)
+    hostname = url.hostname
+    port = url.port
+    response_url = f"{hostname}:{port}{url_file_path}"
+    return response_url
+
+def add_cors_headers(self):
+    self.headers['Access-Control-Allow-Origin'] = '*'
+    self.headers['Access-Control-Allow-Methods'] = '*'
+    self.headers['Access-Control-Allow-Headers'] = '*'
+Response.add_cors_headers = add_cors_headers
