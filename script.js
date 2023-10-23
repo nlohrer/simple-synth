@@ -1,4 +1,4 @@
-url = "http://localhost:6500";
+const url = "http://localhost:6500";
 const head = document.querySelector('#head');
 const submit = document.querySelector("#submit");
 var id = 1;
@@ -19,7 +19,7 @@ const envelopeGraph = document.querySelector("#envelope-graph")
 const graphWidth = envelopeContainer.getAttribute("width");
 const graphHeight = envelopeContainer.getAttribute("height");
 
-envelopeFields = [secondsField, attackField, decayField, releaseField];
+const envelopeFields = [secondsField, attackField, decayField, releaseField];
 envelopeFields.forEach((field) => {
     field.addEventListener("input", () => {
         keepEnvelopeBalance();
@@ -58,8 +58,8 @@ function addWAVToContainer(created_url) {
 }
 
 async function createWAV(frequency, duration, amplitude, waveform, envelope) {
-    body = `{"frequency": ${frequency}, "seconds": ${duration}, "amplitude": ${amplitude}, "waveform": "${waveform}", "envelope": ${envelope}}`;
-    response = await fetch(`${url}/synth/${id++}`, {
+    const body = `{"frequency": ${frequency}, "seconds": ${duration}, "amplitude": ${amplitude}, "waveform": "${waveform}", "envelope": ${envelope}}`;
+    const response = await fetch(`${url}/synth/${id++}`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -72,8 +72,8 @@ async function createWAV(frequency, duration, amplitude, waveform, envelope) {
 }
 
 async function getInfo() {
-    response = await fetch(url);
-    response_text = await response.text()
+    const response = await fetch(url);
+    const response_text = await response.text()
     console.log(response_text);
 }
 
