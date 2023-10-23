@@ -34,7 +34,8 @@ def createWAV(id):
     file_function(freq = freq, sec = sec, amp = amp, fname = local_path, envelope = env)
 
     response_url = get_response_url(request, url_file_path)
-    response = Response(response_url, 201)
+    response = Response(status = 201)
+    response.headers['Location'] = response_url
     response.add_cors_headers()
     
     return response
@@ -90,13 +91,15 @@ def get_file_function(waveform):
 
 def get_response_url(request, url_file_path):
     url = urlparse(request.base_url)
+    protocol = url.scheme
     hostname = url.hostname
     port = url.port
-    response_url = f"{hostname}:{port}{url_file_path}"
+    response_url = f"{protocol}://{hostname}:{port}{url_file_path}"
     return response_url
 
 def add_cors_headers(self):
     self.headers['Access-Control-Allow-Origin'] = '*'
     self.headers['Access-Control-Allow-Methods'] = '*'
     self.headers['Access-Control-Allow-Headers'] = '*'
+    self.headers['Access-Control-Expose-Headers'] = 'Location'
 Response.add_cors_headers = add_cors_headers

@@ -44,16 +44,15 @@ async function addWAVs() {
     addWAVToContainer(wavURL);
 }
 
-function addWAVToContainer(url) {
+function addWAVToContainer(created_url) {
     const container = document.querySelector("#wav-container");
-    const full_url = `http://${url}`;
 
     const audio = document.createElement("audio");
     audio.toggleAttribute("controls");
     container.appendChild(audio);
 
     const source = document.createElement("source");
-    source.setAttribute("src", full_url);
+    source.setAttribute("src", created_url);
     source.setAttribute("type", "audio/wav");
     audio.appendChild(source);
 }
@@ -68,8 +67,8 @@ async function createWAV(frequency, duration, amplitude, waveform, envelope) {
         body: body
     });
 
-    response_text = await response.text();
-    return response_text;
+    const created_url = response.headers.get('location');
+    return created_url;
 }
 
 async function getInfo() {
