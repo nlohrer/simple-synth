@@ -1,7 +1,6 @@
 const url = "http://localhost:6500";
 const head = document.querySelector('#head');
 const submit = document.querySelector("#submit");
-var id = 1;
 submit.addEventListener("click", addWAVs)
 
 const frequencyField = document.querySelector("#frequency");
@@ -59,7 +58,7 @@ function addWAVToContainer(created_url) {
 
 async function createWAV(frequency, duration, amplitude, waveform, envelope) {
     const body = `{"frequency": ${frequency}, "seconds": ${duration}, "amplitude": ${amplitude}, "waveform": "${waveform}", "envelope": ${envelope}}`;
-    const response = await fetch(`${url}/synth/${id++}`, {
+    const response = await fetch(`${url}/synth`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'

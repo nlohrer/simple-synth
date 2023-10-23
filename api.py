@@ -7,23 +7,35 @@ import synth
 
 app = Flask(__name__)
 
+used_indices = set()
+def get_index():
+    global used_indices
+    i = 1
+    while True:
+        if i in used_indices:
+            i += 1
+            continue
+        used_indices.add(i)
+        return i
+
 @app.route("/")
 def information():
-    response =  Response("To create a .wav file, send a POST request to /synth/<id>")
+    response =  Response("To create a .wav file, send a POST request to /synth")
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
 # Example usage:
 # $ curl -iX "POST" "localhost:6500/synth/1" -H "content-type: application/json" -d '{"frequency": 440, "seconds": 2}'
 # The response body includes the path to the created .wav file
-@app.route("/synth/<id>", methods=['OPTIONS', 'POST'])
-def createWAV(id):
+@app.route("/synth", methods=['OPTIONS', 'POST'])
+def createWAV():
     if request.method == 'OPTIONS':
         response = app.make_default_options_response()
         response.add_cors_headers()
         return response
     
     current_working_directory = os.getcwd()
+    id = get_index()
     url_file_path = f"/static/{id}.wav"
     local_path = f"{current_working_directory}{url_file_path}"
 
@@ -52,7 +64,7 @@ def correct_parameters(amplitude, envelope, freq, waveform):
     amp = 0.1
     if (amplitude):
         amp = set_amplitude(amplitude, freq, waveform)
-    if envelope is not None:
+    if envelope is not None and envelope != "None":
         env = envelope.values()
     else:
         env = None
