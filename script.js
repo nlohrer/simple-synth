@@ -51,12 +51,16 @@ function addWAVToContainer(created_url) {
 
     const audioContainer = document.createElement("div")
     const deleteButton = document.createElement("button")
+    const downloadForm = document.createElement("form");
+    const downloadButton = document.createElement("button")
     const audio = document.createElement("audio");
     const source = document.createElement("source");
 
     audio.toggleAttribute("controls");
     audioContainer.classList.add("audio-container");
     audioContainer.appendChild(audio);
+    audioContainer.appendChild(downloadForm);
+    downloadForm.appendChild(downloadButton);
     audioContainer.appendChild(deleteButton);
     wavContainer.appendChild(audioContainer);
 
@@ -65,6 +69,10 @@ function addWAVToContainer(created_url) {
         deleteWAV(id);
         audioContainer.remove();
     });
+
+    downloadForm.action = created_url;
+    downloadForm.method = "get";
+    downloadButton.textContent = "Download";
 
     source.setAttribute("src", created_url);
     source.setAttribute("type", "audio/wav");
