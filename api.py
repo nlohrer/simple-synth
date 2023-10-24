@@ -1,9 +1,12 @@
 from flask import Flask
 from flask import request
 from flask import Response
-import os
 from urllib.parse import urlparse
+import os
+from sys import path
+path.insert(1, 'synth')
 import synth
+
 
 app = Flask(__name__)
 

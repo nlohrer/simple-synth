@@ -1,9 +1,9 @@
 # simple-synth
-Simple synth using Python to create basic sine, square, sawtooth or square waves. examples.py includes some examples for creating such waves and for basic additive synthesis.
+Simple synth using Python to create basic sine, square, sawtooth or square waves. examples.py in the synth directory includes some examples for creating such waves and for basic additive synthesis.
 
-To create .wav files for sine waves via command line, you can use "python sine.py [frequency] [length] [filename]"
+To create .wav files for sine waves via command line, you can use "python synth/sine.py [frequency] [length] [filename]"
 
-For example, "python sine.py 440 5 a.wav" creates a 5 second long sine wave pitched at A440.
+For example, "python synth/sine.py 440 5 a.wav" creates a 5 second long sine wave pitched at A440.
 
 ## Web app
 
@@ -24,8 +24,13 @@ Afterwards, open index.html in a browser of your choice.
 To run the app on Windows, you can run the same commands in powershell, only replacing the steps to create and activate the virtual environment:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\activate
+git clone https://github.com/nlohrer/simple-synth.git; `
+Set-Location simple-synth; `
+New-Item static -ItemType Directory; `
+python -m venv .venv; `
+.\.venv\Scripts\activate; `
+pip install -r requirements.txt; `
+flask --app api run --port 6500
 ```
 
 All created wav files are stored in the directory `static`. Some bugs you encounter while using the app might be solved by deleting its contents or by rerunning the API.
