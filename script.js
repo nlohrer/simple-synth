@@ -41,7 +41,11 @@ async function addWAVs() {
     const envelope = `{"attack": ${attack}, "decay": ${decay}, "release": ${release}}`
 
     const wavURL = await createWAV(frequency, seconds, amplitude, waveform, envelope);
-    addWAVToContainer(wavURL);
+
+    // hashing current time and adding it to URL to prevent browsers from using cached versions of deleted files
+    const stamped_URL = wavURL + '?' + Date.now().toString(36);     
+
+    addWAVToContainer(stamped_URL);
 }
 
 function addWAVToContainer(created_url) {
