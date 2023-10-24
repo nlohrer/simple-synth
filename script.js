@@ -3,6 +3,7 @@ const head = document.querySelector('#head');
 const submit = document.querySelector("#submit");
 submit.addEventListener("click", addWAVs)
 
+const wavContainer = document.querySelector("#wav-container");
 const frequencyField = document.querySelector("#frequency");
 const secondsField = document.querySelector("#sec");
 const ampField = document.querySelector("#amp");
@@ -44,15 +45,30 @@ async function addWAVs() {
 }
 
 function addWAVToContainer(created_url) {
-    const container = document.querySelector("#wav-container");
+    const idExpr = /\/\d+\./g;
+    const idContext = created_url.match(idExpr)[0];
+    const id = idContext.slice(1, -1);
 
+    const audioContainer = document.createElement("div")
+    const deleteButton = document.createElement("button")
     const audio = document.createElement("audio");
-    audio.toggleAttribute("controls");
-    container.appendChild(audio);
-
     const source = document.createElement("source");
+
+    audio.toggleAttribute("controls");
+    audioContainer.classList.add("audio-container");
+    audioContainer.appendChild(audio);
+    audioContainer.appendChild(deleteButton);
+    wavContainer.appendChild(audioContainer);
+
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+        deleteWAV(id);
+        audioContainer.remove();
+    });
+
     source.setAttribute("src", created_url);
     source.setAttribute("type", "audio/wav");
+
     audio.appendChild(source);
 }
 
@@ -68,6 +84,12 @@ async function createWAV(frequency, duration, amplitude, waveform, envelope) {
 
     const created_url = response.headers.get('location');
     return created_url;
+}
+
+async function deleteWAV(id) {
+    await fetch(`${url}/synth/${id}`, {
+        method: 'DELETE'
+    });
 }
 
 async function getInfo() {
