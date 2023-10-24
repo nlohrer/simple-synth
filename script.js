@@ -86,9 +86,9 @@ function keepEnvelopeBalance() {
     const decayRemainder = seconds - attack - release;
     const releaseRemainder = seconds - attack - decay;
 
-    attackField.max = attackRemainder > 0 ? attackRemainder : 0;
-    decayField.max = decayRemainder ? decayRemainder : 0;
-    releaseField.max = releaseRemainder ? releaseRemainder : 0;
+    attackField.max = attackRemainder;
+    decayField.max = decayRemainder;
+    releaseField.max = releaseRemainder;
 
     attackLabel.textContent = `Attack: ${parseFloat(attack).toFixed(2)}`;
     decayLabel.textContent = `Decay: ${parseFloat(decay).toFixed(2)}`;
