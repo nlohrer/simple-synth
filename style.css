@@ -21,6 +21,10 @@ form {
     gap: 10px;
 }
 
+.audio-container {
+    display: flex;
+}
+
 #wav-container {
     margin-top: 20px;
 }
