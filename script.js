@@ -100,30 +100,30 @@ function updateEnvelopeGraph() {
     const seconds = secondsField.value;
     const unit = graphWidth / seconds
 
-    const newAttack = Math.round(attackField.value * unit);
-    if (newAttack == graphWidth) {
+    const attackCoordinates = Math.round(attackField.value * unit);
+    if (attackCoordinates == graphWidth) {
         envelopeGraph.setAttribute("d", `M0,${Math.round(graphHeight)} L${graphWidth},0`);
         return;
     }
-    const newDecay = Math.round(decayField.value * unit);
-    const newRelease = Math.round(releaseField.value * unit);
-    const newSeconds = Math.round(seconds * unit);
+    const decayCoordinates = Math.round(decayField.value * unit);
+    const releaseCoordinates = Math.round(releaseField.value * unit);
+    const secondsCoordinates = Math.round(seconds * unit);
 
     coordinateArray[0] = `M0,${graphHeight}`
-    coordinateArray[1] = `L${newAttack},0`;
-    coordinateArray[2] = `L${newAttack + newDecay},${Math.round(graphHeight/2)}`;
-    coordinateArray[3] = `L${newSeconds - newRelease},${Math.round(graphHeight/2)}`;
+    coordinateArray[1] = `L${attackCoordinates},0`;
+    coordinateArray[2] = `L${attackCoordinates + decayCoordinates},${Math.round(graphHeight/2)}`;
+    coordinateArray[3] = `L${secondsCoordinates - releaseCoordinates},${Math.round(graphHeight/2)}`;
     coordinateArray[4] = `L${graphWidth},${graphHeight}`;
 
-    if (newAttack === 0) {
-        if (newDecay === 0) {
+    if (attackCoordinates === 0) {
+        if (decayCoordinates === 0) {
             coordinateArray[0] = `M0,${Math.round(graphHeight/2)}`
             coordinateArray[1] = `L0,${Math.round(graphHeight/2)}`
         } else {
         coordinateArray[0] = `M0,0`;
         }
     }
-    if (newRelease === 0) {
+    if (releaseCoordinates === 0) {
         coordinateArray[4] = `L${graphWidth},${Math.round(graphHeight/2)}`
     }
 
