@@ -2,8 +2,8 @@ FROM python:3-alpine
 
 WORKDIR /src
 
-COPY ./flask .
-COPY ../synth ./synth
+COPY . .
+#COPY ../synth ./synth
 RUN pip install -r ./requirements.txt
 RUN mkdir ./static
 

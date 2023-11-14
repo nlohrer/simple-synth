@@ -1,0 +1,9 @@
+services:
+    nginx-proxy:
+        build: ./nginx
+        ports:
+            - '10000:80'
+        depends_on:
+            - backend
+    backend:
+        build: ./flask

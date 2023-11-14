@@ -1,4 +1,4 @@
-const url = "http://localhost:6500";
+const url = ".";
 const head = document.querySelector('#head');
 const submit = document.querySelector("#submit");
 submit.addEventListener("click", addWAVs)
