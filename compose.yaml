@@ -5,6 +5,8 @@ services:
             dockerfile: nginx/Dockerfile
         ports:
             - '10000:80'
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - backend
     backend:
