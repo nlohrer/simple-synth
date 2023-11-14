@@ -1,12 +1,17 @@
 services:
     nginx-proxy:
-        build:
-            context: .
-            dockerfile: nginx/Dockerfile
+        image: nginx
         ports:
-            - '10000:80'
+            - 10000:80
         volumes:
-            - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+            - type: bind
+              source: ./nginx/nginx.conf
+              target: /etc/nginx/conf.d/default.conf
+              read_only: true
+            - type: bind
+              source: ./web
+              target: /data/web
+              read_only: true
         depends_on:
             - backend
     backend:
