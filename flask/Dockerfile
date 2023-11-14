@@ -1,11 +1,11 @@
 FROM python:3-alpine
 
-WORKDIR /src
+WORKDIR /src/flask
 
-COPY . .
-#COPY ../synth ./synth
-RUN pip install -r ./requirements.txt
+COPY ./flask .
+COPY ./synth ../synth
 RUN mkdir ./static
+RUN pip install -r ./requirements.txt
 
 EXPOSE 6500
 

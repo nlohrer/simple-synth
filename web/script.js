@@ -1,4 +1,4 @@
-const url = ".";
+const url = "..";
 const head = document.querySelector('#head');
 const submit = document.querySelector("#submit");
 submit.addEventListener("click", addWAVs)

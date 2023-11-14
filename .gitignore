@@ -3,3 +3,4 @@
 ex.py
 __pycache__
 .venv/
+static/
