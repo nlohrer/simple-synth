@@ -3,28 +3,28 @@ import numpy
 from scipy.io import wavfile
 
 # 12-TET examples for sin waves
-#synth.sin_to_file(440, sec = 10, fname = "./wavs/concert_a4.wav")
-#synth.sin_to_file(440 * 2**(2 / 12), sec = 10, fname = "./wavs/concert_b4.wav")
-#synth.sin_to_file(440 * 2**(7 / 12), sec = 10, fname = "./wavs/concert_e5.wav")
-#synth.sin_to_file(440 * 2**(1 / 24), sec = 10, fname = "./wavs/half_sharp_a4.wav")
-#synth.sin_to_file(440 / 2**(9 / 12), sec = 10, fname = "./wavs/concert_c4.wav")
+#synth.sin_to_file(440, sec = 10, fname = "./synth/wavs/concert_a4.wav")
+#synth.sin_to_file(440 * 2**(2 / 12), sec = 10, fname = "./synth/wavs/concert_b4.wav")
+#synth.sin_to_file(440 * 2**(7 / 12), sec = 10, fname = "./synth/wavs/concert_e5.wav")
+#synth.sin_to_file(440 * 2**(1 / 24), sec = 10, fname = "./synth/wavs/half_sharp_a4.wav")
+#synth.sin_to_file(440 / 2**(9 / 12), sec = 10, fname = "./synth/wavs/concert_c4.wav")
 
 # triangular waves
 '''
 wav_tri = synth.tri_to_wav(440, 5)
-wavfile.write('./wavs/concert_a4_tri.wav', 44100, wav_tri)
+wavfile.write('./synth/wavs/concert_a4_tri.wav', 44100, wav_tri)
 '''
 
 # saw waves
 '''
 wav_saw = synth.saw_to_wav(440, 5)
-wavfile.write('./wavs/concert_a4_saw.wav', 44100, wav_saw)
+wavfile.write('./synth/wavs/concert_a4_saw.wav', 44100, wav_saw)
 '''
 
 #  square waves
 '''
 wav_square = synth.square_to_wav(440, 5)
-wavfile.write('./wavs/concert_a4_square.wav', 44100, wav_square)
+wavfile.write('./synth/wavs/concert_a4_square.wav', 44100, wav_square)
 '''
 
 # Twinkle Twinkle Little Star - rhythm is not not perfect
@@ -38,7 +38,7 @@ melody = ['A4', 'rest', 'A4', 'rest', 'E5', 'rest', 'E5', 'rest', 'Fs5', 'rest',
 melody_wav = notes_synth[melody[0]]
 for note in melody[1:]:
     melody_wav = numpy.append(melody_wav, notes_synth[note])
-wavfile.write('./wavs/twinkle_twinkle.wav', 44100, melody_wav)
+wavfile.write('./synth/wavs/twinkle_twinkle.wav', 44100, melody_wav)
 '''
 
 # An example for additive synthesis
@@ -48,5 +48,5 @@ def calc_harmonic_series(freq, n):
 
 n = 10
 freqs = calc_harmonic_series(220, n)
-synth.sin_to_file_additive(freqs, [0.2 * (1 / 2) ** i for i in range(1, n + 1)], 5, fname = './wavs/additive.wav')
+synth.sin_to_file_additive(freqs, [0.2 * (1 / 2) ** i for i in range(1, n + 1)], 5, fname = './synth/wavs/additive.wav')
 '''
