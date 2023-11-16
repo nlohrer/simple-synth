@@ -1,9 +1,9 @@
 server {
-    listen 80;
-    server_name localhost;
+    listen ${NGINX_PORT};
+    server_name ${PROXY_HOSTNAME};
     
     location / {
-        return 301 http://$server_name:10000/web/;
+        return 301 http://$server_name:${PROXY_PORT}/web/;
     }
 
     location /web {
@@ -13,7 +13,7 @@ server {
 
     location /synth {
         proxy_pass http://backend:6500/synth;
-        proxy_redirect http://backend:6500 http://$server_name:10000;
+        proxy_redirect http://backend:6500 http://$server_name:${PROXY_PORT};
     }
 
     location /static {
