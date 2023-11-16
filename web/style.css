@@ -1,24 +1,105 @@
+:root {
+    --font: Helvetica, 'Times New Roman', monospace;
+    --normal-font-size: 18px;
+    --input-font-size: 14px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    background-color: #e3fff9;
+    background-color: #eef8f4;
+    color:#353535;
+    font-family: var(--font);
+    font-size: var(--normal-font-size);
+}
+
+input {
+    font-family: var(--font);
+    font-size: var(--input-font-size);
+}
+
+.main-container {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+h1 {
+    margin-bottom: 40px;
+    font-size: 34px;
 }
 
-.synth-option {
+form {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.options-container {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 100px;
+    row-gap: 60px;
+}
+
+.general-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.general-options-container fieldset {
+    gap: 10px;
+}
+
+.general-options-container fieldset input {
+    width: 140px;
 }
 
 .envelope-options {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.envelope-options-ranges {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 4px;
+}
+
+.envelope-option-range span {
+    color: red;
+}
+
+.envelope-options-ranges fieldset {
+    border: none;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.range-value-container {
+    display: flex;
+    justify-content: right;
+    gap: 5px;
+}
+
+fieldset {
+    border: none;
+    display: flex;
+    justify-content: space-between;
 }
 
 .audio-container {

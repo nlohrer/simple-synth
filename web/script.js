@@ -11,9 +11,9 @@ const waveformField = document.querySelector("#waveform");
 const attackField = document.querySelector("#attack");
 const decayField = document.querySelector("#decay");
 const releaseField = document.querySelector("#release");
-const attackLabel = document.querySelector("#attack-label");
-const decayLabel = document.querySelector("#decay-label");
-const releaseLabel = document.querySelector("#release-label");
+const attackLabel = document.querySelector("#attack-value");
+const decayLabel = document.querySelector("#decay-value");
+const releaseLabel = document.querySelector("#release-value");
 const envelopeContainer = document.querySelector("#envelope-container");
 const envelopeGraph = document.querySelector("#envelope-graph")
 const graphWidth = envelopeContainer.getAttribute("width");
@@ -124,9 +124,9 @@ function keepEnvelopeBalance() {
     decayField.max = decayRemainder;
     releaseField.max = releaseRemainder;
 
-    attackLabel.textContent = `Attack: ${parseFloat(attack).toFixed(2)}`;
-    decayLabel.textContent = `Decay: ${parseFloat(decay).toFixed(2)}`;
-    releaseLabel.textContent = `Release: ${parseFloat(release).toFixed(2)}`;
+    attackLabel.textContent = `${parseFloat(attack).toFixed(2)}`;
+    decayLabel.textContent = `${parseFloat(decay).toFixed(2)}`;
+    releaseLabel.textContent = `${parseFloat(release).toFixed(2)}`;
 }
 
 function updateEnvelopeGraph() {

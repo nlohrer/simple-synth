@@ -7,59 +7,81 @@
     <title>Synth</title>
 </head>
 <body>
-    <h1 id='head'>Simple synth</h1>
+    <div class="main-container">
+    <h1 id='head'>simple-synth</h1>
     <form action='javascript:void(0);' method='post' class='synth-form'>
-    <div class='synth-option'>
-        <label for='frequency'>Frequency</label>
-        <input type='text' name='frequency' id='frequency' value='440' required />
-    </div>
+        <div class="options-container">
+        <div class="general-options-container">
+            <fieldset>
+                <label for='frequency'>Frequency</label>
+                <input type='text' name='frequency' id='frequency' value='440' required />
+            </fieldset>
 
-    <div class='synth-option'>
-        <label for='sec'>Duration</label>
-        <input type='text' name='sec' id='sec' value='1' required/>
-    </div>
+            <fieldset>
+                <label for='sec'>Duration</label>
+                <input type='text' name='sec' id='sec' value='1' required/>
+            </fieldset>
 
-    <div class='synth-option'>
-        <label for='amp'>Amplitude</label>
-        <input type='range' name='amp' id='amp' min='0.01' max='0.5' step='0.01' value='0.1'/>
-    </div>
+            <fieldset>
+                <label for='amp'>Amplitude</label>
+                <input type='range' name='amp' id='amp' min='0.01' max='0.5' step='0.01' value='0.1'/>
+            </fieldset>
 
-    <div class="synth-option">
-        <label for="waveform">Waveform</label>
-        <select name="waveform" id="waveform">
-            <option value="sine">sine</option>
-            <option value="triangular">triangular</option>
-            <option value="sawtooth">sawtooth</option>
-            <option value="square">square</option>
-        </select>
-    </div>
+            <fieldset>
+                <label for="waveform">Waveform</label>
+                <select name="waveform" id="waveform">
+                    <option value="sine">sine</option>
+                    <option value="triangular">triangular</option>
+                    <option value="sawtooth">sawtooth</option>
+                    <option value="square">square</option>
+                </select>
+            </fieldset>
+        </div>
 
-    <div class="synth-option envelope-options">
-        <label for="attack" id='attack-label'>Attack: </label>
-        <input type="range" name='attack' id='attack' min='0' max='1' step='0.01' value='0'>
-        <label for="decay" id='decay-label'>Decay: </label>
-        <input type="range" name='decay' id='decay' min='0' max='1' step='0.01' value='0'>
-        <label for="release" id='release-label'>Release: </label>
-        <input type="range" name='release' id='release' min='0' max='1' step='0.01' value='0'>
-    </div>
+        <div class="envelope-options">
 
-    <div class="synth-option">
-        <svg id='envelope-container' width='200' height='100' xmlns='https://www.w3.org/2000/svg'>
-        <path id='envelope-graph' fill="none" stroke="black" />
-    </svg>
-    </div>
-    <!--
-    <div class='synth-option'>
-        <label for='sample_rate'>Sample rate</label>
-        <input type='text' name='sample_rate' id='sample_rate' />
-    </div>
-    -->
+            <svg id='envelope-container' width='200' height='100' xmlns='https://www.w3.org/2000/svg'>
+                <path id='envelope-graph' fill="none" stroke="black" />
+            </svg>
 
-    <div class='synth-option'>
-        <input id='submit' type='submit' value='Create file' />
-    </div>
+            <div class="envelope-options-ranges">
+                <fieldset>
+                    <label for="attack" id='attack-label'>Attack:</label>
+                    <div class='range-value-container'>
+                        <label for="attack" id='attack-value'>0.00</label>
+                        <input type="range" name='attack' id='attack' min='0' max='1' step='0.01' value='0'>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="decay" id='decay-label'>Decay:</label>
+                    <div class='range-value-container'>
+                        <label for="attack" id='decay-value'>0.00</label>
+                        <input type="range" name='decay' id='decay' min='0' max='1' step='0.01' value='0'>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="release" id='release-label'>Release:</label>
+                    <div class='range-value-container'>
+                        <label for="attack" id='release-value'>0.00</label>
+                        <input type="range" name='release' id='release' min='0' max='1' step='0.01' value='0'>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+            <!--
+            <fieldset>
+                <label for='sample_rate'>Sample rate</label>
+                <input type='text' name='sample_rate' id='sample_rate' />
+            </fieldset>
+            -->
+        </div>
+        <fieldset>
+            <input id='submit' type='submit' value='Create file' />
+        </fieldset>
     </form>
     <div id='wav-container'>
+    </div>
     </div>
 </body>
 
