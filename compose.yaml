@@ -22,3 +22,4 @@ services:
         build:
             context: .
             dockerfile: flask/Dockerfile
+        stop_signal: SIGINT
