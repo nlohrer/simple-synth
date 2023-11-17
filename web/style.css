@@ -1,7 +1,13 @@
 :root {
+    --background-color: #eef8f4;
+    --text-color: #353535;
     --font: Helvetica, 'Times New Roman', monospace;
     --normal-font-size: 18px;
     --input-font-size: 14px;
+    --input-background: #3A3A3A;
+    --input-hovered: #4e4e4e;
+    --input-pressed: #757575;
+    --input-text-color: #eef8f4;
 }
 
 * {
@@ -10,8 +16,8 @@
 }
 
 body {
-    background-color: #eef8f4;
-    color:#353535;
+    background-color: var(--background-color);
+    color: var(--text-color);
     font-family: var(--font);
     font-size: var(--normal-font-size);
 }
@@ -79,10 +85,6 @@ form {
     row-gap: 4px;
 }
 
-.envelope-option-range span {
-    color: red;
-}
-
 .envelope-options-ranges fieldset {
     border: none;
     display: flex;
@@ -112,3 +114,35 @@ fieldset {
     margin-top: 20px;
 }
 
+input, select, button {
+    padding: 4px;
+    background-color: var(--input-background);
+    color: var(--background-color);
+    border: 1px;
+    border-radius: 10px;
+    outline: none;
+}
+
+input[type="range"] {
+    accent-color: var(--input-background);
+}
+
+#submit, button {
+    min-width: fit-content;
+    padding: 8px;
+    border-radius: 14px;
+    font-size: 18px;
+}
+
+#submit:hover, input[type="text"]:hover, select:hover, button:hover/*, #submit:focus, input[type="text"]:focus, select:focus, button:focus*/ {
+    background-color: var(--input-hovered);
+    color: var(--input-text-color);
+}
+
+#submit:active, button:active {
+    background-color: var(--input-pressed);
+}
+
+.audio-container button {
+    font-size: 16px;
+}
