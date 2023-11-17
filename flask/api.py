@@ -88,7 +88,10 @@ def correct_parameters(amplitude, envelope, freq, waveform):
     if (amplitude):
         amp = set_amplitude(amplitude, freq, waveform)
     if envelope is not None and envelope != "None":
-        env = envelope.values()
+        attack = envelope.setdefault('attack', 0)
+        decay = envelope.setdefault('decay', 0)
+        release = envelope.setdefault('release', 0)
+        env = {'attack': attack, 'decay': decay, 'release': release}
     else:
         env = None
     return amp, env

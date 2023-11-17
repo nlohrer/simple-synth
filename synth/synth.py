@@ -6,7 +6,7 @@ def sin_to_wav(freq, sec, amp = 0.1, sample_rate = 44100, envelope = None):
     if envelope is None:
         return oscillators.osc_to_wav(osc, sec, amp, sample_rate)
     else:
-        attack, decay, release = envelope
+        attack, decay, release = envelope['attack'], envelope['decay'], envelope['release']
         wav_array = oscillators.apply_envelope(osc, sec, attack, decay, release, sample_rate)
         return oscillators.array_to_wav(wav_array, amp)
 
@@ -15,7 +15,7 @@ def tri_to_wav(freq, sec, amp = 0.1, sample_rate = 44100, envelope = None):
     if envelope is None:
         return oscillators.osc_to_wav(osc, sec, amp, sample_rate)
     else:
-        attack, decay, release = envelope
+        attack, decay, release = envelope['attack'], envelope['decay'], envelope['release']
         wav_array = oscillators.apply_envelope(osc, sec, attack, decay, release, sample_rate)
         return oscillators.array_to_wav(wav_array, amp)
 
@@ -24,7 +24,7 @@ def saw_to_wav(freq, sec, amp = 0.1, sample_rate = 44100, envelope = None):
     if envelope is None:
         return oscillators.osc_to_wav(osc, sec, amp, sample_rate)
     else:
-        attack, decay, release = envelope
+        attack, decay, release = envelope['attack'], envelope['decay'], envelope['release']
         wav_array = oscillators.apply_envelope(osc, sec, attack, decay, release, sample_rate)
         return oscillators.array_to_wav(wav_array, amp)
 
@@ -33,7 +33,7 @@ def square_to_wav(freq, sec, amp = 0.1, sample_rate = 44100, envelope = None):
     if envelope is None:
         return oscillators.osc_to_wav(osc, sec, amp, sample_rate)
     else:
-        attack, decay, release = envelope
+        attack, decay, release = envelope['attack'], envelope['decay'], envelope['release']
         wav_array = oscillators.apply_envelope(osc, sec, attack, decay, release, sample_rate)
         return oscillators.array_to_wav(wav_array, amp)
 
