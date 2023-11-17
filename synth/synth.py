@@ -6,8 +6,8 @@ WAVE_TYPE_MAP = {'sine': oscillators.get_sin_oscillator,
                   'square': oscillators.get_square_oscillator,
                   'sawtooth': oscillators.get_saw_oscillator}
 
-def get_wav(freq, sec, wave_type, amp = 0.1, sample_rate = 44100, envelope = None):
-    osc_generator = WAVE_TYPE_MAP[wave_type]
+def get_wav(freq, sec, waveform, amp = 0.1, sample_rate = 44100, envelope = None):
+    osc_generator = WAVE_TYPE_MAP[waveform]
     osc = osc_generator(frequency = freq, amplitude = 1)
     if envelope is None:
         return oscillators.osc_to_wav(osc, sec, amp, sample_rate)
@@ -39,18 +39,18 @@ def tri_to_file_additive(freqs, amps, sec, fname = 'temp.wav', sample_rate = 441
     combined_wav = sum(wavs)
     wavfile.write(fname, sample_rate, combined_wav)
 
-def sin_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100, envelope = None):
-    wav = sin_to_wav(freq, sec, amp, sample_rate, envelope)
+def waveform_to_file(freq, sec, waveform, fname = "temp.wav", amp = 0.1, sample_rate = 44100, envelope = None):
+    wav = get_wav(freq, sec, waveform, amp, sample_rate, envelope)
     wavfile.write(fname, sample_rate, wav)
+
+def sin_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100, envelope = None):
+    waveform_to_file(freq, sec, 'sine', fname, amp, sample_rate, envelope)
 
 def tri_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100, envelope = None):
-    wav = tri_to_wav(freq, sec, amp, sample_rate, envelope)
-    wavfile.write(fname, sample_rate, wav)
+    waveform_to_file(freq, sec, 'triangular', fname, amp, sample_rate, envelope)
 
 def saw_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100, envelope = None):
-    wav = saw_to_wav(freq, sec, amp, sample_rate, envelope)
-    wavfile.write(fname, sample_rate, wav)
+    waveform_to_file(freq, sec, 'sawtooth', fname, amp, sample_rate, envelope)
 
 def square_to_file(freq, sec, fname = "temp.wav", amp = 0.1, sample_rate = 44100, envelope = None):
-    wav = square_to_wav(freq, sec, amp, sample_rate, envelope)
-    wavfile.write(fname, sample_rate, wav)
+    waveform_to_file(freq, sec, 'square', fname, amp, sample_rate, envelope)
