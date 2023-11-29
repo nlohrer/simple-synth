@@ -12,6 +12,9 @@ app = Flask(__name__)
 
 used_indices = set()
 def get_index():
+    '''
+    Gets a new index used as the id for a newly created wav file, then increments the global index.
+    '''
     global used_indices
     i = 1
     while True:
@@ -48,8 +51,8 @@ def deleteWAV(id_str):
     return response
 
 # Example usage:
-# $ curl -iX "POST" "localhost:6500/synth/1" -H "content-type: application/json" -d '{"frequency": 440, "seconds": 2}'
-# The response body includes the path to the created .wav file
+# $ curl -iX "POST" "localhost:6500/synth" -H "content-type: application/json" -d '{"frequency": 440, "seconds": 2}'
+# The location header of the response contains the path to the created wav file
 @app.route("/synth", methods=['OPTIONS', 'POST'])
 def createWAV():
     if request.method == 'OPTIONS':
@@ -76,6 +79,9 @@ def createWAV():
     return response
 
 def get_params_from_body(body):
+    '''
+    Reads the parameters from the request body into a tuple.
+    '''
     freq = body['frequency']
     sec = body['seconds']
     amplitude = body.get('amplitude')
@@ -84,6 +90,9 @@ def get_params_from_body(body):
     return freq, sec, amplitude, waveform, envelope
 
 def correct_parameters(amplitude, envelope, freq, waveform):
+    '''
+    Adjusts the amplitude and creates the envelope for the wav file.
+    '''
     amp = 0.1
     if (amplitude):
         amp = set_amplitude(amplitude, freq, waveform)
@@ -97,6 +106,11 @@ def correct_parameters(amplitude, envelope, freq, waveform):
     return amp, env
 
 def set_amplitude(amplitude, freq, waveform):
+    '''
+    Sets the amplitude for the wav file to be created. Decreases the amplitude for higher frequencies to prevent possible loss of hearing from overly loud sounds.
+
+    Also decreases the amplitude for sawtooth and square waves as these tend to be much louder than sine and triangular waves otherwise.
+    '''
     # these are somewhat arbitrarily defined limits for amplitude; the upper limit for amplitude increases with frequency to prevent loss of hearing
     if freq <= 300:
         upper_limit = 1
@@ -112,12 +126,16 @@ def set_amplitude(amplitude, freq, waveform):
         upper_limit = 0.05
     # Preventing the creation of extremely loud sounds
     amp = amplitude if amplitude <= upper_limit else upper_limit
+
     # Sawtooth waves and square waves tend to be louder than others
     if waveform in ('sawtooth', 'square'):
         amp *= 0.8
     return amp
 
 def get_file_function(waveform):
+    '''
+    Returns the function to create a wav file depending on the waveform.
+    '''
     if waveform == 'sine':
         return synth.sin_to_file
     elif waveform == 'triangular':
@@ -128,6 +146,9 @@ def get_file_function(waveform):
         return synth.square_to_file
 
 def get_response_url(request, url_file_path):
+    '''
+    Generates the url for the newly created wav file, which can then be used in GET and DELETE requests.
+    '''
     url = urlparse(request.base_url)
     protocol = url.scheme
     hostname = url.hostname
@@ -136,6 +157,9 @@ def get_response_url(request, url_file_path):
     return response_url
 
 def add_cors_headers(self):
+    '''
+    Adds CORS headers to a response.
+    '''
     self.headers['Access-Control-Allow-Origin'] = '*'
     self.headers['Access-Control-Allow-Methods'] = '*'
     self.headers['Access-Control-Allow-Headers'] = '*'

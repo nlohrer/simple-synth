@@ -1,7 +1,9 @@
 import math
 
-# function for triangular waves
 def triangular(x):
+    '''
+    Triangular wave function.
+    '''
     if x < 0 or x > 1:
         return triangular(x - math.floor(x))
     elif x < 0.5:
@@ -9,15 +11,19 @@ def triangular(x):
     else:
         return 3 - 4*x
 
-# function for sawtooth waves
 def saw(x):
+    '''
+    Sawtooth wave function.
+    '''
     if x < 0 or x > 1:
         return saw(x - math.floor(x))
     else:
         return -1 + 2*x
 
-# function for square waves
 def square(x):
+    '''
+    Square wave function.
+    '''
     if x < 0 or x > 1:
         return square(x - math.floor(x))
     elif x < 0.5:
@@ -27,7 +33,9 @@ def square(x):
 
 def get_linear_interpolation_function(p1, p2):
     '''
-    input: (x1, x2), (y1, y2) 
+    Returns a linear function that interpolates the two given points.
+
+    p1 and p2 are given as pairs of integers.
     '''
     x1, y1 = p1
     x2, y2 = p2

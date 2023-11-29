@@ -5,40 +5,61 @@ import wave_functions as wave
 
 # oscillators for different waveforms
 def get_triangular_oscillator(frequency, amplitude, sample_rate = 44100):
+    '''
+    Returns an iterator for a triangular wave.
+    '''
     increment = frequency / sample_rate
     return (wave.triangular(v) * amplitude for v in itertools.count(start = 0, step = increment))
 
 def get_saw_oscillator(frequency, amplitude, sample_rate = 44100):
+    '''
+    Returns an iterator for a sawtooth wave.
+    '''
     increment = frequency / sample_rate
     return (wave.saw(v) * amplitude for v in itertools.count(start = 0, step = increment))
 
 def get_square_oscillator(frequency, amplitude, sample_rate = 44100):
+    '''
+    Returns an iterator for a square wave.
+    '''
     increment = frequency / sample_rate
     return (wave.square(v) * amplitude for v in itertools.count(start = 0, step = increment))
 
 def get_sin_oscillator(frequency, amplitude, sample_rate = 44100):
+    '''
+    Returns an iterator for a sine wave.
+    '''
     increment = (2 * math.pi * frequency) / sample_rate
     return (wave.math.sin(v) * amplitude for v in itertools.count(start = 0, step = increment))
 
 def osc_to_array(osc, sec, sample_rate = 44100):
+    '''
+    Turns an iterator to a numpy array with its length depending on the given length in seconds and the sample rate.
+    '''
     samples = [next(osc) for i in range(round(44100 * sec))]
     wav_array = numpy.array(samples)
     return wav_array
 
 def array_to_wav(wav_array, amp):
+    '''
+    Turns a numpy array into a numpy array with the fitting format to create a wav file.
+    '''
     wav = numpy.int16(wav_array * amp * (2**15 - 1))
     return wav
 
 def osc_to_wav(osc, sec, amp = 0.1, sample_rate = 44100):
+    '''
+    Turns an iterator into a numpy array with the fitting format to create a wav file.
+    '''
     wav_array = osc_to_array(osc, sec, sample_rate)
     wav = array_to_wav(wav_array, amp)
     return wav
 
 def apply_envelope(osc, sec, attack, decay, release, sample_rate = 44100):
     '''
-    applys an envelope to an oscillator and returns a numpy array.
+    Applies an envelope to an oscillator and returns a numpy array.
 
-    attack, delay, and release represent durations
+    attack, delay, and release represent durations (in seconds).
     '''
     sustain = sec - attack - decay - release
     if sustain < 0:
