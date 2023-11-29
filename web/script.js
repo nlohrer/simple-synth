@@ -29,7 +29,9 @@ envelopeFields.forEach((field) => {
 keepEnvelopeBalance();
 updateEnvelopeGraph();
 
-
+/**
+ * Reads wav parameters from the form, then sends them to the API and creates an audio-container using the returned url.
+ */
 async function addWAVs() {
     const frequency = frequencyField.value.trim();
     const seconds = secondsField.value.trim();
@@ -48,11 +50,27 @@ async function addWAVs() {
     addWAVToContainer(stamped_URL);
 }
 
+/**
+ * Uses the url of a wav file to add a an audio-container to the website, which contains an audio element, a download button and a delete button for the wav file.
+ * @param created_url The url for the wav file, which was read from the location header of the API response to the POST request.
+ */
 function addWAVToContainer(created_url) {
     const idExpr = /\/\d+\./g;
     const idContext = created_url.match(idExpr)[0];
     const id = idContext.slice(1, -1);
 
+    /*
+    Structure of the audio container:
+    <div class="audio-container">
+        <audio controls="">
+            <source src={created_url} type="audio/wav">
+        </audio>
+        <form action={created_url} method="get">
+            <button>Download</button>
+        </form>
+        <button>Delete</button>
+    </div>
+    */
     const audioContainer = document.createElement("div")
     const deleteButton = document.createElement("button")
     const downloadForm = document.createElement("form");
@@ -84,6 +102,15 @@ function addWAVToContainer(created_url) {
     audio.appendChild(source);
 }
 
+/**
+ * Uses the given parameters to send a POST request to the API and returns the url to the newly created wav file
+ * @param frequency The frequency of the wav file.
+ * @param duration The duration of the wav file in seconds.
+ * @param amplitude The amplitude of the wav file, which corresponds to its volume.
+ * @param waveform The waveform of the wav file.
+ * @param envelope The envelope, which is a JSON object containing values for attack, release and decay (in seconds). Sustain is automatically calculated as sustain = duration - attack - release - decay.
+ * @returns The url read from the location header of the response.
+ */
 async function createWAV(frequency, duration, amplitude, waveform, envelope) {
     const body = `{"frequency": ${frequency}, "seconds": ${duration}, "amplitude": ${amplitude}, "waveform": "${waveform}", "envelope": ${envelope}}`;
     const response = await fetch(`${url}/synth`, {
@@ -98,6 +125,10 @@ async function createWAV(frequency, duration, amplitude, waveform, envelope) {
     return created_url;
 }
 
+/**
+ * Sends a DELETE request to the API to delete the wav file with the given id
+ * @param id The id of the wav file to be deleted.
+ */
 async function deleteWAV(id) {
     await fetch(`${url}/synth/${id}`, {
         method: 'DELETE'
@@ -110,6 +141,11 @@ async function getInfo() {
     console.log(response_text);
 }
 
+/**
+ * Keeps the range inputs for the envelope balanced.
+ * 
+ * We make use of the invariant duration >= attack + decay + release, leading to inequalities of the form attack <= duration - decay - release. These inequalities then lead to statements of the form max(attack) = duration - decay - release, which we then use to set the max value for the envelope value ranges.
+ */
 function keepEnvelopeBalance() {
     const seconds = secondsField.value.trim();
     const attack = attackField.value;
@@ -124,11 +160,15 @@ function keepEnvelopeBalance() {
     decayField.max = decayRemainder;
     releaseField.max = releaseRemainder;
 
+    // ensuring that the value labels never change in width
     attackLabel.textContent = `${parseFloat(attack).toFixed(2)}`;
     decayLabel.textContent = `${parseFloat(decay).toFixed(2)}`;
     releaseLabel.textContent = `${parseFloat(release).toFixed(2)}`;
 }
 
+/**
+ * Renders the svg graph for the envelope options.
+ */
 function updateEnvelopeGraph() {
     const coordinateArray = new Array(5);
     const seconds = secondsField.value;
@@ -143,12 +183,14 @@ function updateEnvelopeGraph() {
     const releaseCoordinates = Math.round(releaseField.value * unit);
     const secondsCoordinates = Math.round(seconds * unit);
 
+    // Using an attack/decay/sustain/release envelope leads to five different points we need to specify for the graph
     coordinateArray[0] = `M0,${graphHeight}`
     coordinateArray[1] = `L${attackCoordinates},0`;
     coordinateArray[2] = `L${attackCoordinates + decayCoordinates},${Math.round(graphHeight/2)}`;
     coordinateArray[3] = `L${secondsCoordinates - releaseCoordinates},${Math.round(graphHeight/2)}`;
     coordinateArray[4] = `L${graphWidth},${graphHeight}`;
 
+    // Some combinations of extreme values mean that some lines should not be rendered
     if (attackCoordinates === 0) {
         if (decayCoordinates === 0) {
             coordinateArray[0] = `M0,${Math.round(graphHeight/2)}`
