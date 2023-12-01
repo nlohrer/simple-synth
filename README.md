@@ -6,7 +6,7 @@ To create .wav files for sine waves via command line, you can use "python synth/
 For example, "python synth/sine.py 440 5 a.wav" creates a 5 second long sine wave pitched at A440.
 
 ## Docker-compose
-Simply run `docker compose up -d` in the root directory and go to `http://localhost:10000` in a browser of your choice. To stop and remove the containers, run `docker compose down`.
+Simply run `docker compose --env-file .env.dev up -d` in the root directory and go to `http://localhost:10000` in a browser of your choice. To stop and remove the containers, run `docker compose --env-file .env.dev down`.
 
 ## Web app
 

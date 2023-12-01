@@ -13,11 +13,13 @@ services:
               target: /data/web
               read_only: true
         depends_on:
-            - backend
+            - $FLASK_HOSTNAME
         environment:
             - PROXY_HOSTNAME=localhost
             - PROXY_PORT=$OUTPORT
             - NGINX_PORT=80
+            - FLASK_HOSTNAME=$FLASK_HOSTNAME
+            - FLASK_PORT=6500
     backend:
         build:
             context: .
@@ -30,7 +32,8 @@ services:
             dockerfile: cron/Dockerfile
         environment:
             - CURL_PORT=6500
-            - CURL_HOST=backend
+            - CURL_HOST=$FLASK_HOSTNAME
+            - WAV_FILE_LOCATION=/src/static
         depends_on:
             - nginx-proxy
         init: true

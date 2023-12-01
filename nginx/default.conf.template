@@ -12,11 +12,11 @@ server {
     }
 
     location /synth {
-        proxy_pass http://backend:6500/synth;
-        proxy_redirect http://backend:6500 http://$server_name:${PROXY_PORT};
+        proxy_pass http://${FLASK_HOSTNAME}:${FLASK_PORT}/synth;
+        proxy_redirect http://${FLASK_HOSTNAME}:${FLASK_PORT} http://$server_name:${PROXY_PORT};
     }
 
     location /static {
-        proxy_pass http://backend:6500/static;
+        proxy_pass http://${FLASK_HOSTNAME}:${FLASK_PORT}/static;
     }
 }
