@@ -2,7 +2,7 @@ services:
     nginx-proxy:
         image: nginx
         ports:
-            - 10000:80
+            - $OUTPORT:80
         volumes:
             - type: bind
               source: ./nginx
@@ -16,7 +16,7 @@ services:
             - backend
         environment:
             - PROXY_HOSTNAME=localhost
-            - PROXY_PORT=10000
+            - PROXY_PORT=$OUTPORT
             - NGINX_PORT=80
     backend:
         build:
