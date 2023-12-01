@@ -6,7 +6,8 @@ COPY ./flask .
 COPY ./synth ../synth
 RUN mkdir ./static
 RUN pip install -r ./requirements.txt
+RUN pip install gunicorn
 
 EXPOSE 6500
 
-CMD ["flask", "--app", "api", "run", "--host", "0.0.0.0", "--port", "6500"]
+CMD ["gunicorn", "-w", "2", "-b", "0.0.0.0:6500", "api:app"]
