@@ -36,7 +36,6 @@ services:
             - WAV_FILE_LOCATION=/src/static
         depends_on:
             - nginx-proxy
-        init: true
         volumes:
             - wav-files:/src/static
 volumes:

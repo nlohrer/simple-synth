@@ -3,6 +3,7 @@ FROM alpine
 WORKDIR /src/cron
 RUN mkdir /src/static
 COPY ./cron .
+RUN apk add tini
 RUN crontab delete-crontab
 
-CMD ["crond", "-f"]
+ENTRYPOINT ["tini", "--", "/usr/sbin/crond", "-f"]
