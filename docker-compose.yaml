@@ -22,3 +22,19 @@ services:
         build:
             context: .
             dockerfile: flask/Dockerfile
+        volumes:
+            - wav-files:/src/flask/static
+    alpine-cron:
+        build:
+            context: .
+            dockerfile: cron/Dockerfile
+        environment:
+            - CURL_PORT=6500
+            - CURL_HOST=backend
+        depends_on:
+            - nginx-proxy
+        init: true
+        volumes:
+            - wav-files:/src/static
+volumes:
+    wav-files:
