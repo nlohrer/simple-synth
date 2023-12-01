@@ -43,6 +43,9 @@ def test_create_and_delete(client, created_ids):
     delete_response = client.delete(f"/synth/{id}")
     assert delete_response.status_code == 204
 
+    get_response_after_deletion = client.get(f"/static/{id}.wav")
+    assert get_response_after_deletion.status_code == 404
+
 
 def test_not_found_if_delete_id_does_not_exist(client):
     response = client.delete(f"/synth/1")
@@ -52,6 +55,19 @@ def test_not_found_if_delete_id_does_not_exist(client):
 def test_information(client):
     response = client.get("/")
     assert response.status_code == 200
+
+def test_get_successful_after_post(client, created_ids):
+    response = client.post("/synth", json={
+        "frequency": 110,
+        "seconds": 0.1,
+    })
+    assert response.status_code == 201
+
+    id = response.get_id()
+
+    get_response = client.get(f"/static/{id}.wav")
+    assert get_response.status_code == 200
+    created_ids.add(id)
 
 
 def test_can_create_all_wave_types(client, created_ids):
