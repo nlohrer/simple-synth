@@ -5,11 +5,14 @@ $ pytest tests.py
 '''
 import pytest
 import re
+import os
 from api import app
 from flask import Response
+from dotenv import load_dotenv
 
-MAX_COUNT = 100
-MAX_LENGTH = 25
+load_dotenv()
+MAX_COUNT = int(os.getenv("MAX_COUNT"))
+MAX_LENGTH = int(os.getenv("MAX_LENGTH"))
 
 @pytest.fixture
 def application_context():

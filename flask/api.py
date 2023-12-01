@@ -1,14 +1,16 @@
 from flask import Flask
 from flask import request
 from flask import Response
+from sys import path
+from dotenv import load_dotenv
 from urllib.parse import urlparse
 import os
-from sys import path
 path.insert(1, '../synth')
 import synth
 
-MAX_COUNT = 100
-MAX_LENGTH = 25
+load_dotenv()
+MAX_COUNT = int(os.getenv("MAX_COUNT"))
+MAX_LENGTH = int(os.getenv("MAX_LENGTH"))
 
 app = Flask(__name__)
 
