@@ -17,7 +17,7 @@ def application_context():
     yield app, created_ids
     for id in created_ids:
         response = app.test_client().delete(f"/synth/{id}")
-        assert response.status_code == 204
+        assert response.status_code in (204, 404)
 
 @pytest.fixture
 def client(application_context):
@@ -30,7 +30,7 @@ def created_ids(application_context):
     return created_ids
 
 
-def test_create_and_delete(client, created_ids):
+def test_create_and_delete(client):
     response = client.post("/synth", json={
         "frequency": 440,
         "seconds": 1
@@ -46,9 +46,26 @@ def test_create_and_delete(client, created_ids):
     get_response_after_deletion = client.get(f"/static/{id}.wav")
     assert get_response_after_deletion.status_code == 404
 
+def test_delete_all_successfully(client, created_ids):
+    response_urls = list()
+    for _ in range(3):
+        response = client.post("/synth", json={
+            "frequency": 150,
+            "seconds": 1
+        })
+        id = response.get_id()
+        response_urls.append(f"/static/{id}.wav")
+        created_ids.add(id)
+
+    delete_response = client.delete("/delete")
+    assert delete_response.status_code == 204
+    
+    for url in response_urls:
+        response = client.get(url)
+        assert response.status_code == 404
 
 def test_not_found_if_delete_id_does_not_exist(client):
-    response = client.delete(f"/synth/1")
+    response = client.delete(f"/synth/1000")
     assert response.status_code == 404
 
 

@@ -30,6 +30,21 @@ def information():
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
+@app.route("/delete", methods=['OPTIONS', 'DELETE'])
+def deleteWAVs():
+    if request.method == 'OPTIONS':
+        response = app.make_default_options_response()
+        response.add_cors_headers()
+        return response
+
+    global used_indices
+    for id in used_indices.copy():
+        os.remove(f"./static/{id}.wav")
+        used_indices.remove(id)
+    response = Response(status = 204)
+    response.add_cors_headers()
+    return response
+
 @app.route("/synth/<id_str>", methods=['OPTIONS', 'DELETE'])
 def deleteWAV(id_str):
     if request.method == 'OPTIONS':
