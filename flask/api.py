@@ -74,6 +74,10 @@ def createWAV():
         response = app.make_default_options_response()
         response.add_cors_headers()
         return response
+
+    if len(used_indices) > 100:
+        response = Response("Amount of created files exceeded, delete some of the created files or try again tomorrow", status = 503)
+        return response
     
     current_working_directory = os.getcwd()
     id = get_index()

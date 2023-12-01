@@ -64,6 +64,18 @@ def test_delete_all_successfully(client, created_ids):
         response = client.get(url)
         assert response.status_code == 404
 
+def test_error_after_creating_too_many_files(client, created_ids):
+    assert client.delete("/delete").status_code == 204
+
+    for i in range(102):
+        response = client.post("/synth", json={
+            "frequency": 100,
+            "seconds": 0
+        })
+        if (i == 101):
+            assert client.delete("/delete").status_code == 204
+            assert response.status_code == 503
+
 def test_not_found_if_delete_id_does_not_exist(client):
     response = client.delete(f"/synth/1000")
     assert response.status_code == 404
