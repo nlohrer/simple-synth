@@ -8,6 +8,9 @@ import re
 from api import app
 from flask import Response
 
+MAX_COUNT = 100
+MAX_LENGTH = 25
+
 @pytest.fixture
 def application_context():
     app.config.update({
@@ -67,12 +70,12 @@ def test_delete_all_successfully(client, created_ids):
 def test_error_after_creating_too_many_files(client, created_ids):
     assert client.delete("/delete").status_code == 204
 
-    for i in range(102):
+    for i in range(MAX_COUNT + 2):
         response = client.post("/synth", json={
             "frequency": 100,
             "seconds": 0
         })
-        if (i == 101):
+        if (i == MAX_COUNT + 1):
             assert client.delete("/delete").status_code == 204
             assert response.status_code == 503
 
@@ -143,6 +146,13 @@ def test_using_all_parameters_work(client, created_ids):
     })
     assert response.status_code == 201
     created_ids.add(response.get_id())
+
+def test_cannot_create_overly_long_files(client, created_ids):
+    response = client.post("/synth", json={
+        "frequency": 880,
+        "seconds": MAX_LENGTH + 1
+    })
+    assert response.status_code == 400
 
 
 def get_id(self):

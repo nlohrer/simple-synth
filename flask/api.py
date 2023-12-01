@@ -7,6 +7,8 @@ from sys import path
 path.insert(1, '../synth')
 import synth
 
+MAX_COUNT = 100
+MAX_LENGTH = 25
 
 app = Flask(__name__)
 
@@ -75,7 +77,7 @@ def createWAV():
         response.add_cors_headers()
         return response
 
-    if len(used_indices) > 100:
+    if len(used_indices) > MAX_COUNT:
         response = Response("Amount of created files exceeded, delete some of the created files or try again tomorrow", status = 503)
         return response
     
@@ -85,6 +87,9 @@ def createWAV():
     local_path = f"{current_working_directory}{url_file_path}"
 
     freq, sec, amplitude, waveform, envelope = get_params_from_body(request.json)
+    if (sec > MAX_LENGTH):
+        response = Response(f"Duration too high, please do not exceed {MAX_LENGTH} seconds", status = 400)
+        return response
     amp, env = correct_parameters(amplitude, envelope, freq, waveform)
 
     file_function = get_file_function(waveform)
