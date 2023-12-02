@@ -1,5 +1,5 @@
 # simple-synth
-You can try out [the webapp](https://simple-synth.azurewebsites.net/static/index.html)!
+You can try out [the web app](https://simple-synth.azurewebsites.net/static/index.html)!
 
 Simple synth using Python to create basic sine, square, sawtooth or square waves. examples.py in the synth directory includes some examples for creating such waves and for basic additive synthesis.
 

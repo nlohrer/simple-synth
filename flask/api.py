@@ -176,7 +176,10 @@ def get_response_url(request, url_file_path):
     Generates the url for the newly created wav file, which can then be used in GET and DELETE requests.
     '''
     url = urlparse(request.base_url)
-    protocol = url.scheme
+    if (os.getenv("HTTPS_ENABLED", False)):
+        protocol = "https"
+    else:
+        protocol = url.scheme
     hostname = url.hostname
     if url.port is None:
         port = ""
