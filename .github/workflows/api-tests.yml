@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    working-directory: ./flask
+
 jobs:
   build:
 
@@ -20,14 +24,12 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
-    - name: Install dependencies and setup tests
-      working-directory: ./flask
+    - name: Install dependencies and set up tests
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest
         mkdir static
     - name: Test with pytest
-      working-directory: ./flask
       run:
         pytest tests.py
