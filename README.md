@@ -1,4 +1,6 @@
 # simple-synth
+You can try out [the webapp](https://simple-synth.azurewebsites.net/static/index.html)!
+
 Simple synth using Python to create basic sine, square, sawtooth or square waves. examples.py in the synth directory includes some examples for creating such waves and for basic additive synthesis.
 
 To create .wav files for sine waves via command line, you can use "python synth/sine.py [frequency] [length] [filename]"
@@ -19,7 +21,7 @@ mkdir static
 cp ../web/* static
 python3 -m venv .venv
 . ./.venv/bin/activate
-pip install -r requirements.txt
+pip install -r ../requirements.txt
 flask --app api run --port 6500
 ```
 
@@ -34,7 +36,7 @@ New-Item static -ItemType Directory; `
 Copy-Item ..\web\* static; `
 python -m venv .venv; `
 .\.venv\Scripts\activate; `
-pip install -r requirements.txt; `
+pip install -r ..\requirements.txt; `
 flask --app api run --port 6500
 ```
 

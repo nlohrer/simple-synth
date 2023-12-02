@@ -3,6 +3,7 @@ FROM python:3-alpine
 WORKDIR /src/flask
 
 COPY ./flask .
+COPY requirements.txt .
 COPY ./synth ../synth
 RUN mkdir ./static
 RUN pip install -r ./requirements.txt

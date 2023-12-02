@@ -9,8 +9,8 @@ path.insert(1, '../synth')
 import synth
 
 load_dotenv()
-MAX_COUNT = int(os.getenv("MAX_COUNT"))
-MAX_LENGTH = int(os.getenv("MAX_LENGTH"))
+MAX_COUNT = int(os.getenv("MAX_COUNT", 200))
+MAX_LENGTH = int(os.getenv("MAX_LENGTH", 25))
 
 app = Flask(__name__)
 
@@ -178,8 +178,11 @@ def get_response_url(request, url_file_path):
     url = urlparse(request.base_url)
     protocol = url.scheme
     hostname = url.hostname
-    port = url.port
-    response_url = f"{protocol}://{hostname}:{port}{url_file_path}"
+    if url.port is None:
+        port = ""
+    else:
+        port =  f":{url.port}"
+    response_url = f"{protocol}://{hostname}{port}{url_file_path}"
     return response_url
 
 def add_cors_headers(self):
