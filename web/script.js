@@ -1,21 +1,21 @@
 const url = "..";
-const head = document.querySelector('#head');
-const submit = document.querySelector("#submit");
+const head = document.getElementById("head");
+const submit = document.getElementById("submit");
 submit.addEventListener("click", addWAVs)
 
-const wavContainer = document.querySelector("#wav-container");
-const frequencyField = document.querySelector("#frequency");
-const secondsField = document.querySelector("#sec");
-const ampField = document.querySelector("#amp");
-const waveformField = document.querySelector("#waveform");
-const attackField = document.querySelector("#attack");
-const decayField = document.querySelector("#decay");
-const releaseField = document.querySelector("#release");
-const attackLabel = document.querySelector("#attack-value");
-const decayLabel = document.querySelector("#decay-value");
-const releaseLabel = document.querySelector("#release-value");
-const envelopeContainer = document.querySelector("#envelope-container");
-const envelopeGraph = document.querySelector("#envelope-graph")
+const wavContainer = document.getElementById("wav-container");
+const frequencyField = document.getElementById("frequency");
+const secondsField = document.getElementById("sec");
+const ampField = document.getElementById("amp");
+const waveformField = document.getElementById("waveform");
+const attackField = document.getElementById("attack");
+const decayField = document.getElementById("decay");
+const releaseField = document.getElementById("release");
+const attackLabel = document.getElementById("attack-value");
+const decayLabel = document.getElementById("decay-value");
+const releaseLabel = document.getElementById("release-value");
+const envelopeContainer = document.getElementById("envelope-container");
+const envelopeGraph = document.getElementById("envelope-graph")
 const graphWidth = envelopeContainer.getAttribute("width");
 const graphHeight = envelopeContainer.getAttribute("height");
 
@@ -55,9 +55,9 @@ async function addWAVs() {
  * @param created_url The url for the wav file, which was read from the location header of the API response to the POST request.
  */
 function addWAVToContainer(created_url) {
-    const idExpr = /\/\d+\./g;
+    const idExpr = /\/\d+\.wav/g;
     const idContext = created_url.match(idExpr)[0];
-    const id = idContext.slice(1, -1);
+    const id = idContext.slice(1, -4);
 
     /*
     Structure of the audio container:
