@@ -15,7 +15,8 @@ const attackLabel = document.getElementById("attack-value");
 const decayLabel = document.getElementById("decay-value");
 const releaseLabel = document.getElementById("release-value");
 const envelopeContainer = document.getElementById("envelope-container");
-const envelopeGraph = document.getElementById("envelope-graph")
+const envelopeGraph = document.getElementById("envelope-graph");
+const errorContainer = document.getElementById("error-container");
 const graphWidth = envelopeContainer.getAttribute("width");
 const graphHeight = envelopeContainer.getAttribute("height");
 
@@ -42,7 +43,11 @@ async function addWAVs() {
     const release = releaseField.value;
     const envelope = `{"attack": ${attack}, "decay": ${decay}, "release": ${release}}`
 
-    const wavURL = await createWAV(frequency, seconds, amplitude, waveform, envelope);
+    const returnedContent = await createWAV(frequency, seconds, amplitude, waveform, envelope);
+    const wavURL = returnedContent;
+    if (wavURL == null) {
+        return;
+    }
 
     // hashing current time and adding it to URL to prevent browsers from using cached versions of deleted files
     const stamped_URL = wavURL + '?' + Date.now().toString(36);     
@@ -109,7 +114,7 @@ function addWAVToContainer(created_url) {
  * @param amplitude The amplitude of the wav file, which corresponds to its volume.
  * @param waveform The waveform of the wav file.
  * @param envelope The envelope, which is a JSON object containing values for attack, release and decay (in seconds). Sustain is automatically calculated as sustain = duration - attack - release - decay.
- * @returns The url read from the location header of the response.
+ * @returns The url read from the location header of the response. Returns null if the request was not successful.
  */
 async function createWAV(frequency, duration, amplitude, waveform, envelope) {
     const body = `{"frequency": ${frequency}, "seconds": ${duration}, "amplitude": ${amplitude}, "waveform": "${waveform}", "envelope": ${envelope}}`;
@@ -120,6 +125,12 @@ async function createWAV(frequency, duration, amplitude, waveform, envelope) {
         },
         body: body
     });
+    if (400 <= response.status && response.status < 600) {
+        const error = await response.text();
+        errorContainer.textContent = `Error with status code ${response.status}: ${error}`;
+    } else {
+        errorContainer.textContent = "";
+    }
 
     const created_url = response.headers.get('location');
     return created_url;

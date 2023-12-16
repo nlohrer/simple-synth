@@ -144,6 +144,10 @@ input[type="range"] {
     background-color: var(--input-pressed);
 }
 
+#error-container {
+    color: #b80000;
+}
+
 .wav-container {
     display: flex;
     flex-direction: column;

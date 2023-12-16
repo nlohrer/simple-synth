@@ -104,6 +104,10 @@ def createWAV():
     
     return response
 
+def handle_bad_request(e):
+    return "Bad request! Please make sure to use numbers for frequency and duration.", 400
+app.register_error_handler(400, handle_bad_request)
+
 def get_params_from_body(body):
     '''
     Reads the parameters from the request body into a tuple.
